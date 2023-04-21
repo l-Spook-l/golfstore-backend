@@ -99,7 +99,7 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
-        ordering = ['name', 'price', 'time_create']  # сортировка везде
+        ordering = ['time_create', 'price', '-price']  # сортировка везде
 
 
 class InfoProduct(models.Model):
