@@ -27,7 +27,7 @@ class BrandProduct(models.Model):
     """Производитель продукта, первичная модель"""
     name = models.CharField(max_length=255, db_index=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
-    photo = models.ImageField(upload_to='photos/brand/')
+    photo = models.ImageField(upload_to='photos/brand/', blank=True)
     description = models.TextField(max_length=5000)
 
     def __str__(self):
@@ -44,12 +44,24 @@ class BrandProduct(models.Model):
         return reverse('brand', kwargs={'brand_slug': self.slug})
 
 
-class Rating(models.Model):
-    """Модель рейтинга для продукта"""
-    product = models.ForeignKey("Product", on_delete=models.CASCADE, related_name='product_ratings')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
-    # rating = models.PositiveIntegerField(choices=((1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')))
-    rating = models.FloatField()
+class CategoryProduct(models.Model):
+    """Категория продукта, первичная модель"""
+    name = models.CharField(max_length=255, db_index=True)
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
+    type = models.ManyToManyField(TypeProduct, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    # для настройки в админ-панели
+    class Meta:
+        verbose_name = 'Категория продукта'
+        verbose_name_plural = 'Категории продуктов'
+        ordering = ['name']  # сортировка везде
+
+    def get_absolute_url(self):
+        # type -  название в URL (name='type')
+        return reverse('category', kwargs={'category_slug': self.slug})
 
 
 class ProductPhotos(models.Model):
@@ -62,17 +74,29 @@ class ProductPhotos(models.Model):
     # для настройки в админ-панели
     class Meta:
         verbose_name = 'Фото продукта'
-        verbose_name_plural = 'Фотограции продуктов'
+        verbose_name_plural = 'Фотографии продуктов'
+
+
+class Gender(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('gender', kwargs={'gender_slug': self.slug})
 
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     price = models.IntegerField()
-    rating = models.ForeignKey(Rating, default=0, on_delete=models.SET_NULL, null=True, related_name='total_rating', blank=True)
     photos = models.ManyToManyField(ProductPhotos, blank=True)
+    category = models.ForeignKey(CategoryProduct, on_delete=models.PROTECT)
     type = models.ForeignKey(TypeProduct, on_delete=models.PROTECT)
     brand = models.ForeignKey(BrandProduct, on_delete=models.PROTECT)
+    gender = models.ForeignKey(Gender, on_delete=models.PROTECT)
     time_create = models.DateTimeField(auto_now_add=True)  # принимаем текущее время и не меняется
 
     def __str__(self):

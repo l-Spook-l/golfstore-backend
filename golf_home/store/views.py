@@ -4,10 +4,10 @@ from rest_framework.exceptions import ValidationError, PermissionDenied
 from rest_framework.pagination import PageNumberPagination
 
 from .filters import ProductFilter
-from .models import Product, TypeProduct, BrandProduct, InfoProduct, Basket, BasketProduct, Rating, Review, \
-    ProductPhotos
+from .models import Product, TypeProduct, BrandProduct, InfoProduct, Basket, BasketProduct, Gender, Review, \
+    ProductPhotos, CategoryProduct
 from .serializer import StoreSerializer, BrandSerializer, TypeSerializer, InfoProductSerializer, BasketSerializer, \
-    RatingSerializer, ReviewSerializer, ProductPhotosSerializer, BasketProductSerializer
+    ReviewSerializer, ProductPhotosSerializer, BasketProductSerializer, GenderSerializer, CategorySerializer
 
 
 class ProductAPILIstPagination(PageNumberPagination):
@@ -51,6 +51,18 @@ class TypeViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'slug'
 
 
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = CategoryProduct.objects.all()
+    serializer_class = CategorySerializer
+    lookup_field = 'slug'
+
+
+class GenderViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Gender.objects.all()
+    serializer_class = GenderSerializer
+    lookup_field = 'slug'
+
+
 class InfoProductViewSet(viewsets.ModelViewSet):
     queryset = InfoProduct.objects.all()
     serializer_class = InfoProductSerializer
@@ -64,11 +76,6 @@ class BasketViewSet(viewsets.ModelViewSet):
 class BasketProductViewSet(viewsets.ModelViewSet):
     queryset = BasketProduct.objects.all()
     serializer_class = BasketProductSerializer
-
-
-class RatingViewSet(viewsets.ModelViewSet):
-    queryset = Rating.objects.all()
-    serializer_class = RatingSerializer
 
 
 class ReviewViewSet(viewsets.ModelViewSet):

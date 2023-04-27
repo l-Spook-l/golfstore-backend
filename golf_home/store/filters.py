@@ -10,6 +10,8 @@ class ProductFilter(filters.FilterSet):
     # Ищем по слагу, можно задать несколько типов или брэндов
     type = CharFilterInFilter(field_name='type__slug', lookup_expr='in')
     brand = CharFilterInFilter(field_name='brand__slug', lookup_expr='in')
+    category = CharFilterInFilter(field_name='category__slug', lookup_expr='in')
+    gender = CharFilterInFilter(field_name='gender__slug', lookup_expr='in')
 
     min_price = filters.NumberFilter(field_name="price", lookup_expr="gte")
     max_price = filters.NumberFilter(field_name="price", lookup_expr="lte")
@@ -18,5 +20,4 @@ class ProductFilter(filters.FilterSet):
 
     class Meta:
         model = Product
-        fields = ['type', 'brand', 'min_price', 'max_price']
-
+        fields = ['type', 'brand', 'gender', 'category', 'min_price', 'max_price']
