@@ -29,6 +29,8 @@ class BrandProduct(models.Model):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     photo = models.ImageField(upload_to='photos/brand/', blank=True)
     description = models.TextField(max_length=5000)
+    type = models.ManyToManyField(TypeProduct, blank=True)
+    categories = models.ManyToManyField('CategoryProduct', blank=True)
 
     def __str__(self):
         return self.name
@@ -61,7 +63,7 @@ class CategoryProduct(models.Model):
         ordering = ['name']  # сортировка везде
 
     def get_absolute_url(self):
-        # category -  название в URL (name='category')
+        # category - название в URL (name='category')
         return reverse('category', kwargs={'category_slug': self.slug})
 
 
