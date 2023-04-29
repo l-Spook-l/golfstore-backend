@@ -1,9 +1,10 @@
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions
 from rest_framework.exceptions import ValidationError, PermissionDenied
 from rest_framework.pagination import PageNumberPagination
 
-from .filters import ProductFilter
+from .filters import ProductFilter, CategoryFilter
 from .models import Product, TypeProduct, BrandProduct, InfoProduct, Basket, BasketProduct, Gender, Review, \
     ProductPhotos, CategoryProduct
 from .serializer import StoreSerializer, BrandSerializer, TypeSerializer, InfoProductSerializer, BasketSerializer, \
@@ -55,6 +56,19 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = CategoryProduct.objects.all()
     serializer_class = CategorySerializer
     lookup_field = 'slug'
+
+
+class ProductListByCategory(viewsets.ReadOnlyModelViewSet):
+    serializer_class = StoreSerializer
+    filterset_class = CategoryFilter
+    filter_backends = [DjangoFilterBackend]
+    pagination_class = ProductAPILIstPagination
+
+    def get_queryset(self):
+        category_slug = self.kwargs['category_slug']
+        category = get_object_or_404(CategoryProduct, slug=category_slug)
+        queryset = Product.objects.filter(category=category)
+        return queryset
 
 
 class GenderViewSet(viewsets.ReadOnlyModelViewSet):

@@ -41,7 +41,7 @@ class CategoryProductAdmin(admin.ModelAdmin):
     # автозаполнение слага на основе имени
     prepopulated_fields = {'slug': ('name',)}
     # Если поле manyTOmany
-    filter_horizontal = ('type',)
+    filter_horizontal = ('type', 'brand')
 
 
 class TypeProductAdmin(admin.ModelAdmin):

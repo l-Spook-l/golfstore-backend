@@ -52,7 +52,8 @@ class TypeSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    type = serializers.SlugRelatedField(slug_field="name", read_only=True, many=True)
+    type = TypeSerializer(many=True)  # Получим все поля из модели type в поле type
+    brand = BrandSerializer(many=True)  # Получим все поля из модели brand в поле brand
 
     class Meta:
         model = CategoryProduct

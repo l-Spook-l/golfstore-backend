@@ -49,6 +49,7 @@ class CategoryProduct(models.Model):
     name = models.CharField(max_length=255, db_index=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     type = models.ManyToManyField(TypeProduct, blank=True)
+    brand = models.ManyToManyField(BrandProduct, blank=True)
 
     def __str__(self):
         return self.name
@@ -60,7 +61,7 @@ class CategoryProduct(models.Model):
         ordering = ['name']  # сортировка везде
 
     def get_absolute_url(self):
-        # type -  название в URL (name='type')
+        # category -  название в URL (name='category')
         return reverse('category', kwargs={'category_slug': self.slug})
 
 
@@ -150,6 +151,7 @@ class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт', related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     comment = models.TextField(max_length=5000)
+    parent = models.ForeignKey('self', verbose_name="Родитель", on_delete=models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

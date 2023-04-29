@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from .views import StoreViewSet, BrandViewSet, TypeViewSet, InfoProductViewSet, BasketViewSet, ReviewViewSet, \
-    ProductPhotosViewSet, BasketProductViewSet, CategoryViewSet
+    ProductPhotosViewSet, BasketProductViewSet, CategoryViewSet, ProductListByCategory
 
 product_list = StoreViewSet.as_view({'get': 'list'})
 product_detail = StoreViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'})
@@ -13,14 +13,16 @@ urlpatterns = format_suffix_patterns([
     path('product/<int:pk>/', product_detail),
     path('product-create/', product_create),
 
-    path('brand/', BrandViewSet.as_view({'get': 'list'})),
+    path('brands/', BrandViewSet.as_view({'get': 'list'})),
     path('brand/<slug:slug>/', BrandViewSet.as_view({'get': 'retrieve'})),
 
-    path('type/', TypeViewSet.as_view({'get': 'list'})),
+    path('types/', TypeViewSet.as_view({'get': 'list'})),
     path('type/<slug:slug>/', TypeViewSet.as_view({'get': 'retrieve'})),
 
-    path('category/', CategoryViewSet.as_view({'get': 'list'})),
-    path('category/<slug:slug>/', CategoryViewSet.as_view({'get': 'retrieve'})),
+    path('categories/', CategoryViewSet.as_view({'get': 'list'})),
+    path('category-info/<slug:slug>/', CategoryViewSet.as_view({'get': 'retrieve'})),
+
+    path('category/<slug:category_slug>/', ProductListByCategory.as_view({'get': 'list'})),
 
     path('review/', ReviewViewSet.as_view({'get': 'list', 'post': 'create'})),
     path('review/<int:pk>/', ReviewViewSet.as_view({'put': 'update', 'delete': 'destroy'})),
