@@ -4,11 +4,13 @@ from rest_framework import viewsets, permissions
 from rest_framework.exceptions import ValidationError, PermissionDenied
 from rest_framework.pagination import PageNumberPagination
 
-from .filters import ProductFilter, CategoryFilter
+from .filters import ProductFilter, CategoryFilter, BrandFilter
 from .models import Product, TypeProduct, BrandProduct, InfoProduct, Basket, BasketProduct, Gender, Review, \
     ProductPhotos, CategoryProduct
-from .serializer import StoreSerializer, BrandSerializer, TypeSerializer, InfoProductSerializer, BasketSerializer, \
-    ReviewSerializer, ProductPhotosSerializer, BasketProductSerializer, GenderSerializer, CategorySerializer
+from .serializer import StoreSerializer, BrandWithTypeAndCategorySerializer, TypeSerializer, InfoProductSerializer, \
+    BasketSerializer, \
+    ReviewSerializer, ProductPhotosSerializer, BasketProductSerializer, GenderSerializer, CategorySerializer, \
+    BrandSerializer, CategoryWithTypeAndBrandSerializer
 
 
 class ProductAPILIstPagination(PageNumberPagination):
@@ -40,21 +42,36 @@ class ProductPhotosViewSet(viewsets.ModelViewSet):
     serializer_class = ProductPhotosSerializer
 
 
-class BrandViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = BrandProduct.objects.all()
-    serializer_class = BrandSerializer
-    lookup_field = 'slug'  # обращаемся по slug вместо id
-
-
 class TypeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = TypeProduct.objects.all()
     serializer_class = TypeSerializer
     lookup_field = 'slug'
 
 
+class BrandViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = BrandProduct.objects.all()
+    # serializer_class = BrandSerializer
+    serializer_class = BrandWithTypeAndCategorySerializer
+    lookup_field = 'slug'  # обращаемся по slug вместо id
+
+
+class ProductListByBrand(viewsets.ReadOnlyModelViewSet):
+    serializer_class = StoreSerializer
+    filterset_class = BrandFilter
+    filter_backends = [DjangoFilterBackend]
+    pagination_class = ProductAPILIstPagination
+
+    def get_queryset(self):
+        brand_slug = self.kwargs['brand_slug']
+        brand = get_object_or_404(BrandProduct, slug=brand_slug)
+        queryset = Product.objects.filter(brand=brand)
+        return queryset
+
+
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = CategoryProduct.objects.all()
-    serializer_class = CategorySerializer
+    # serializer_class = CategorySerializer
+    serializer_class = CategoryWithTypeAndBrandSerializer
     lookup_field = 'slug'
 
 

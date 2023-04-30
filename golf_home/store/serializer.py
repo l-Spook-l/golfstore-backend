@@ -20,8 +20,6 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = "__all__"  # если надо все поля
 
 
-# Сериализатор конвертирует обьекты python (списки, словари...) в JSON
-# создание сериализатора
 class StoreSerializer(serializers.ModelSerializer):
     # Вместо id получаем названия из полей - name
     type = serializers.SlugRelatedField(slug_field="name", read_only=True)
@@ -39,21 +37,37 @@ class StoreSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class BrandSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = BrandProduct
-        fields = "__all__"
-
-
 class TypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = TypeProduct
         fields = "__all__"
 
 
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BrandProduct
+        fields = ('id', 'name', 'slug')
+
+
 class CategorySerializer(serializers.ModelSerializer):
-    type = TypeSerializer(many=True)  # Получим все поля из модели type в поле type
-    brand = BrandSerializer(many=True)  # Получим все поля из модели brand в поле brand
+    class Meta:
+        model = CategoryProduct
+        fields = ('id', 'name', 'slug')
+
+
+class BrandWithTypeAndCategorySerializer(serializers.ModelSerializer):
+    # Вместо id получаем все поля из модели type в поле type
+    type = TypeSerializer(many=True)
+    categories = CategorySerializer(many=True)
+
+    class Meta:
+        model = BrandProduct
+        fields = "__all__"
+
+
+class CategoryWithTypeAndBrandSerializer(serializers.ModelSerializer):
+    type = TypeSerializer(many=True)
+    brand = BrandSerializer(many=True)
 
     class Meta:
         model = CategoryProduct

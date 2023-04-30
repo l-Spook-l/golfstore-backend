@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Product, TypeProduct, BrandProduct, ProductPhotos, Review, InfoProduct, Basket, BasketProduct, CategoryProduct
+from .models import Product, TypeProduct, BrandProduct, ProductPhotos, Review, InfoProduct, Basket, BasketProduct, \
+    CategoryProduct
 
 """
 is_superuser - просмотр инфо в админ-панели
@@ -74,6 +75,8 @@ class BrandProductAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     # автозаполнение слага на основе имени
     prepopulated_fields = {'slug': ('name',)}
+    # Если поле manyTOmany
+    filter_horizontal = ('type', 'categories')
 
 
 class ProductPhotosAdmin(admin.ModelAdmin):
