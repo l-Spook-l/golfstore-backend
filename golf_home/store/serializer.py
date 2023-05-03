@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from .models import Product, BrandProduct, TypeProduct, InfoProduct, Basket, BasketProduct, Gender, Review, \
-    ProductPhotos, CategoryProduct
+from .models import Product, BrandProduct, TypeProduct, InfoProduct, Basket, BasketProduct, WishList, WishListProduct, \
+    Gender, Review, ProductPhotos, CategoryProduct
 
 
 class ProductPhotosSerializer(serializers.ModelSerializer):
@@ -92,7 +92,27 @@ class BasketSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class ProductsForBasketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ('name', 'price', 'photos')
+
+
 class BasketProductSerializer(serializers.ModelSerializer):
+    product = ProductsForBasketSerializer()
+
     class Meta:
         model = BasketProduct
+        fields = "__all__"
+
+
+class WishListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WishList
+        fields = "__all__"
+
+
+class WishListProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WishListProduct
         fields = "__all__"

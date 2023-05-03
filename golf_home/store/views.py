@@ -5,12 +5,11 @@ from rest_framework.exceptions import ValidationError, PermissionDenied
 from rest_framework.pagination import PageNumberPagination
 
 from .filters import ProductFilter, CategoryFilter, BrandFilter
-from .models import Product, TypeProduct, BrandProduct, InfoProduct, Basket, BasketProduct, Gender, Review, \
-    ProductPhotos, CategoryProduct
+from .models import Product, TypeProduct, BrandProduct, InfoProduct, Basket, BasketProduct, WishList, WishListProduct, \
+    Gender, Review, ProductPhotos, CategoryProduct
 from .serializer import StoreSerializer, BrandWithTypeAndCategorySerializer, TypeSerializer, InfoProductSerializer, \
-    BasketSerializer, \
-    ReviewSerializer, ProductPhotosSerializer, BasketProductSerializer, GenderSerializer, CategorySerializer, \
-    BrandSerializer, CategoryWithTypeAndBrandSerializer
+    BasketSerializer, ReviewSerializer, ProductPhotosSerializer, BasketProductSerializer, GenderSerializer, \
+    WishListSerializer, WishListProductSerializer, CategoryWithTypeAndBrandSerializer
 
 
 class ProductAPILIstPagination(PageNumberPagination):
@@ -26,6 +25,7 @@ class StoreViewSet(viewsets.ModelViewSet):
     filterset_class = ProductFilter  # фильтрации записей модели "Product" на основе параметров запроса
     filter_backends = [DjangoFilterBackend]
     pagination_class = ProductAPILIstPagination  # Пагинация
+    lookup_field = 'slug'
 
     # Параметры доступа
     # def get_permissions(self):
@@ -102,11 +102,55 @@ class InfoProductViewSet(viewsets.ModelViewSet):
 class BasketViewSet(viewsets.ModelViewSet):
     queryset = Basket.objects.all()
     serializer_class = BasketSerializer
+    lookup_field = 'user'
+
+    def get_queryset(self):
+        user = self.kwargs['user']
+        queryset = Basket.objects.filter(user=user)
+        return queryset
+
+    # def get_queryset(self):
+    #     user_id = self.kwargs['user_id']
+    #     print("user_id", user_id)
+    #     user = get_object_or_404(Basket, user=user_id)
+    #     print("user", user)
+    #     queryset = Basket.objects.filter(user=user)
+    #     return queryset
 
 
 class BasketProductViewSet(viewsets.ModelViewSet):
     queryset = BasketProduct.objects.all()
     serializer_class = BasketProductSerializer
+    lookup_field = 'basket_id'
+
+    def get_queryset(self):
+        basket_id = self.kwargs['basket_id']
+        basket = get_object_or_404(Basket, id=basket_id)
+        queryset = BasketProduct.objects.filter(basket=basket)
+        return queryset
+
+
+class WishListViewSet(viewsets.ModelViewSet):
+    queryset = WishList.objects.all()
+    serializer_class = WishListSerializer
+    lookup_field = 'user'
+
+    def get_queryset(self):
+        user = self.kwargs['user']
+        queryset = WishList.objects.filter(user=user)
+        return queryset
+
+
+class WishListProductViewSet(viewsets.ModelViewSet):
+    queryset = WishListProduct.objects.all()
+    serializer_class = WishListProductSerializer
+    lookup_field = 'wishlist_id'
+
+    def get_queryset(self):
+        wishlist_id = self.kwargs['wishlist_id']
+        wishlist = get_object_or_404(WishList, id=wishlist_id)
+        queryset = WishListProduct.objects.filter(wishlist=wishlist)
+        return queryset
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
