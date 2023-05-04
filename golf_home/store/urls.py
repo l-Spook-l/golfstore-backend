@@ -1,8 +1,9 @@
 from django.urls import path, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from .views import StoreViewSet, BrandViewSet, TypeViewSet, InfoProductViewSet, BasketViewSet, ReviewViewSet, \
-    ProductPhotosViewSet, BasketProductViewSet, CategoryViewSet, ProductListByCategory, ProductListByBrand, \
-    WishListViewSet, WishListProductViewSet
+    ProductPhotosViewSet, AddProductToBasketViewSet, BasketProductViewSet, CategoryViewSet, ProductListByCategory, \
+    ProductListByBrand, \
+    WishListViewSet, WishListProductViewSet, AddProductToWishListViewSet
 
 product_list = StoreViewSet.as_view({'get': 'list'})
 product_detail = StoreViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'})
@@ -32,18 +33,18 @@ urlpatterns = format_suffix_patterns([
          InfoProductViewSet.as_view({'get': 'list', 'post': 'create', 'put': 'update', 'delete': 'destroy'})),
 
     path('basket/', BasketViewSet.as_view({'post': 'create'})),
-    path('basket/<int:user>/', BasketViewSet.as_view({'put': 'update', 'delete': 'destroy', 'get': 'retrieve'})),
+    path('basket/<int:user>/', BasketViewSet.as_view({'get': 'retrieve'})),
 
-    path('basket-product/', BasketProductViewSet.as_view({'post': 'create'})),
-    path('basket-product/<int:basket_id>/',
-         BasketProductViewSet.as_view({'put': 'update', 'delete': 'destroy', 'get': 'list'})),
+    path('basket-product/', AddProductToBasketViewSet.as_view({'post': 'create'})),
+    path('basket-product/<int:basket_id>/', BasketProductViewSet.as_view({'get': 'list'})),
+    path('basket-product/<int:basket_id>/<int:product_id>', BasketProductViewSet.as_view({'delete': 'destroy'})),
 
     path('wishlist/', WishListViewSet.as_view({'post': 'create'})),
-    path('wishlist/<int:user>/', WishListViewSet.as_view({'put': 'update', 'delete': 'destroy', 'get': 'retrieve'})),
+    path('wishlist/<int:user>/', WishListViewSet.as_view({'get': 'retrieve'})),
 
-    path('wishlist-product/', WishListProductViewSet.as_view({'post': 'create'})),
-    path('wishlist-product/<int:wishlist_id>/',
-         WishListProductViewSet.as_view({'put': 'update', 'delete': 'destroy', 'get': 'list'})),
+    path('wishlist-product/', AddProductToWishListViewSet.as_view({'post': 'create'})),
+    path('wishlist-product/<int:wishlist_id>/', WishListProductViewSet.as_view({'get': 'list'})),
+    path('wishlist-product/<int:wishlist_id>/<int:product_id>', WishListProductViewSet.as_view({'delete': 'destroy'})),
 
     path('photo-product/',
          ProductPhotosViewSet.as_view({'get': 'list', 'post': 'create', 'put': 'update', 'delete': 'destroy'})),

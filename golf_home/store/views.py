@@ -9,7 +9,8 @@ from .models import Product, TypeProduct, BrandProduct, InfoProduct, Basket, Bas
     Gender, Review, ProductPhotos, CategoryProduct
 from .serializer import StoreSerializer, BrandWithTypeAndCategorySerializer, TypeSerializer, InfoProductSerializer, \
     BasketSerializer, ReviewSerializer, ProductPhotosSerializer, BasketProductSerializer, GenderSerializer, \
-    WishListSerializer, WishListProductSerializer, CategoryWithTypeAndBrandSerializer
+    WishListSerializer, WishListProductSerializer, CategoryWithTypeAndBrandSerializer, ProductListByBasketSerializer, \
+    ProductListByWishListSerializer
 
 
 class ProductAPILIstPagination(PageNumberPagination):
@@ -50,7 +51,6 @@ class TypeViewSet(viewsets.ReadOnlyModelViewSet):
 
 class BrandViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = BrandProduct.objects.all()
-    # serializer_class = BrandSerializer
     serializer_class = BrandWithTypeAndCategorySerializer
     lookup_field = 'slug'  # обращаемся по slug вместо id
 
@@ -70,7 +70,6 @@ class ProductListByBrand(viewsets.ReadOnlyModelViewSet):
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = CategoryProduct.objects.all()
-    # serializer_class = CategorySerializer
     serializer_class = CategoryWithTypeAndBrandSerializer
     lookup_field = 'slug'
 
@@ -109,19 +108,16 @@ class BasketViewSet(viewsets.ModelViewSet):
         queryset = Basket.objects.filter(user=user)
         return queryset
 
-    # def get_queryset(self):
-    #     user_id = self.kwargs['user_id']
-    #     print("user_id", user_id)
-    #     user = get_object_or_404(Basket, user=user_id)
-    #     print("user", user)
-    #     queryset = Basket.objects.filter(user=user)
-    #     return queryset
+
+class AddProductToBasketViewSet(viewsets.ModelViewSet):
+    queryset = BasketProduct.objects.all()
+    serializer_class = BasketProductSerializer
 
 
 class BasketProductViewSet(viewsets.ModelViewSet):
     queryset = BasketProduct.objects.all()
-    serializer_class = BasketProductSerializer
-    lookup_field = 'basket_id'
+    serializer_class = ProductListByBasketSerializer
+    lookup_field = 'product_id'
 
     def get_queryset(self):
         basket_id = self.kwargs['basket_id']
@@ -141,10 +137,15 @@ class WishListViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class WishListProductViewSet(viewsets.ModelViewSet):
+class AddProductToWishListViewSet(viewsets.ModelViewSet):
     queryset = WishListProduct.objects.all()
     serializer_class = WishListProductSerializer
-    lookup_field = 'wishlist_id'
+
+
+class WishListProductViewSet(viewsets.ModelViewSet):
+    queryset = WishListProduct.objects.all()
+    serializer_class = ProductListByWishListSerializer
+    lookup_field = 'product_id'
 
     def get_queryset(self):
         wishlist_id = self.kwargs['wishlist_id']

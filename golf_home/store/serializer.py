@@ -92,14 +92,20 @@ class BasketSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class ProductsForBasketSerializer(serializers.ModelSerializer):
+class BasketProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BasketProduct
+        fields = "__all__"
+
+
+class ProductForBasketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('name', 'price', 'photos')
+        fields = ('id', 'name', 'price', 'photos')
 
 
-class BasketProductSerializer(serializers.ModelSerializer):
-    product = ProductsForBasketSerializer()
+class ProductListByBasketSerializer(serializers.ModelSerializer):
+    product = ProductForBasketSerializer()
 
     class Meta:
         model = BasketProduct
@@ -113,6 +119,20 @@ class WishListSerializer(serializers.ModelSerializer):
 
 
 class WishListProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WishListProduct
+        fields = "__all__"
+
+
+class ProductForWishListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ('id', 'name', 'price', 'photos')
+
+
+class ProductListByWishListSerializer(serializers.ModelSerializer):
+    product = ProductForWishListSerializer()
+
     class Meta:
         model = WishListProduct
         fields = "__all__"
