@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Product, TypeProduct, BrandProduct, ProductPhotos, Review, InfoProduct, Basket, BasketProduct, \
-    CategoryProduct
+    CategoryProduct, User
 
 """
 is_superuser - просмотр инфо в админ-панели
@@ -82,6 +82,8 @@ class BrandProductAdmin(admin.ModelAdmin):
 class ProductPhotosAdmin(admin.ModelAdmin):
     list_display = ('image',)
 
+
+admin.site.register(User)
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(CategoryProduct, CategoryProductAdmin)

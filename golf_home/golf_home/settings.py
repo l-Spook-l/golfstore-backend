@@ -132,7 +132,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# ================================================================
+# ================================================================4
+AUTH_USER_MODEL = "store.User"
+
 # для фото
 MEDIA_ROOT = path.join(BASE_DIR, 'media')  # ссылается на текущюю папку раб. проекта
 MEDIA_URL = '/media/'

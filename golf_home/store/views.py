@@ -3,18 +3,22 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions
 from rest_framework.exceptions import ValidationError, PermissionDenied
 from rest_framework.pagination import PageNumberPagination
-
+from rest_framework.permissions import IsAuthenticated
 from .filters import ProductFilter, CategoryFilter, BrandFilter
 from .models import Product, TypeProduct, BrandProduct, InfoProduct, Basket, BasketProduct, WishList, WishListProduct, \
     Gender, Review, ProductPhotos, CategoryProduct
 from .serializer import StoreSerializer, BrandWithTypeAndCategorySerializer, TypeSerializer, InfoProductSerializer, \
     BasketSerializer, ReviewSerializer, ProductPhotosSerializer, BasketProductSerializer, GenderSerializer, \
     WishListSerializer, WishListProductSerializer, CategoryWithTypeAndBrandSerializer, ProductListByBasketSerializer, \
-    ProductListByWishListSerializer
+    ProductListByWishListSerializer, UserSerializer
+
+
+# from django.contrib.auth.models import User
+from .models import User
 
 
 class ProductAPILIstPagination(PageNumberPagination):
-    page_size = 25  # кол-во записей на 1й стр
+    page_size = 24  # кол-во записей на 1й стр
     # 'page_size' - доп. пар-р в get запросе (нарп. можно получать больше или меньше записей page_size=20)
     page_query_param = 'page'
     max_page_size = 1000  # Ограничение записей на 1й стр для - page_query_param = 'page_size'
@@ -157,3 +161,11 @@ class WishListProductViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+
+
+class UserInfoViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.id)
