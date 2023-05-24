@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-# from django.contrib.auth.models import User
 from django.contrib.auth import models as auth_models
 
 
@@ -51,6 +50,9 @@ class User(auth_models.AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ['first_name', 'last_name']
+
+    def __str__(self):
+        return self.first_name
 
 
 class TypeProduct(models.Model):

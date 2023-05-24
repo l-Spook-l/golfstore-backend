@@ -28,7 +28,7 @@ urlpatterns = format_suffix_patterns([
     path('review/<int:pk>/', ReviewViewSet.as_view({'patch': 'partial_update', 'delete': 'destroy'})),
 
     path('info-product/',
-         InfoProductViewSet.as_view({'get': 'list', 'post': 'create', 'put': 'update', 'delete': 'destroy'})),
+         InfoProductViewSet.as_view({'post': 'create', 'put': 'update', 'delete': 'destroy'})),
 
     path('basket/', BasketViewSet.as_view({'post': 'create'})),
     path('basket/<int:user>/', BasketViewSet.as_view({'get': 'retrieve'})),
@@ -46,6 +46,5 @@ urlpatterns = format_suffix_patterns([
 
     path('user-info/', UserInfoViewSet.as_view({'get': 'list', 'put': 'update'})),
 
-    path('photo-product/',
-         ProductPhotosViewSet.as_view({'get': 'list', 'post': 'create', 'put': 'update', 'delete': 'destroy'})),
+    path('photo-product/', ProductPhotosViewSet.as_view({'post': 'create', 'put': 'update', 'delete': 'destroy'})),
 ])

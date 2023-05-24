@@ -1,4 +1,3 @@
-# from django.contrib.auth.models import User
 from .models import User
 
 from rest_framework import serializers
@@ -16,7 +15,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     # Если надо чтобы присоздании чего либой в модель записывался текущий пользователь
     # user = user в модели если есть (урок 10)
     # user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    username = serializers.StringRelatedField(source='user.username')
+    first_name = serializers.StringRelatedField(source='user.first_name')
 
     class Meta:
         model = Review
@@ -63,7 +62,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class BrandWithTypeAndCategorySerializer(serializers.ModelSerializer):
-    # Вместо id получаем все поля из модели type в поле type
     type = TypeSerializer(many=True)
     categories = CategorySerializer(many=True)
 

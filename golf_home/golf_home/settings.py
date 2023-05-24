@@ -113,6 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'ru'
+# LANGUAGE_CODE = 'ua'
 
 TIME_ZONE = 'Europe/Kiev'
 
@@ -173,7 +174,7 @@ DJOSER = {
 # Для авторизации по JWT токену
 SIMPLE_JWT = {
     # Время жизни 2х токенов
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=50),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=180),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 
     "ROTATE_REFRESH_TOKENS": False,
@@ -190,13 +191,11 @@ SIMPLE_JWT = {
     "JWK_URL": None,
     "LEEWAY": 0,
 
-    # Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc5MjYwOTQ0LCJpYXQiOjE2Nzky
-    # NjA2NDQsImp0aSI6IjkwYjY5Mzk2ODM3NjRlMGI5ZWU4ODk2YWI2YzM4YTU4IiwidXNlcl9pZCI6MX0.H7oU4M3PXga6dDU9a6G0rLapDEw6AoAsF8XIkLHPgXk
     "AUTH_HEADER_TYPES": ("Bearer",),  # определяет заголовок перед токеном в заголовке запроса т.е перед JWT-токеном
 
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "USER_ID_FIELD": "id",
-    "USER_ID_CLAIM": "user_id",  # user_id =  id пользователя
+    "USER_ID_CLAIM": "user_id",  # user_id = id пользователя
     "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
 
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),

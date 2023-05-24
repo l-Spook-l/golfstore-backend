@@ -13,6 +13,9 @@ class ProductFilter(filters.FilterSet):
     category = CharFilterInFilter(field_name='category__slug', lookup_expr='in')
     gender = CharFilterInFilter(field_name='gender__slug', lookup_expr='in')
 
+    name = filters.CharFilter(field_name='name', lookup_expr='icontains')
+    # name = CharFilterInFilter(field_name='name', lookup_expr='icontains')
+
     min_price = filters.NumberFilter(field_name="price", lookup_expr="gte")
     max_price = filters.NumberFilter(field_name="price", lookup_expr="lte")
 
@@ -20,7 +23,7 @@ class ProductFilter(filters.FilterSet):
 
     class Meta:
         model = Product
-        fields = ['type', 'brand', 'gender', 'category', 'min_price', 'max_price']
+        fields = ['type', 'brand', 'gender', 'category', 'name', 'min_price', 'max_price']
 
 
 class CategoryFilter(filters.FilterSet):
