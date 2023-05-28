@@ -40,8 +40,8 @@ class UserManager(auth_models.BaseUserManager):
 
 
 class User(auth_models.AbstractUser):
-    first_name = models.CharField(verbose_name="First_name", max_length=255)
-    last_name = models.CharField(verbose_name="Last_name", max_length=255)
+    first_name = models.CharField(verbose_name="First name", max_length=255)
+    last_name = models.CharField(verbose_name="Last name", max_length=255)
     email = models.EmailField(verbose_name="Email", max_length=255, unique=True)
     password = models.CharField(max_length=255)
     username = None

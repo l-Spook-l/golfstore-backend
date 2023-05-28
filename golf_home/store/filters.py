@@ -14,7 +14,6 @@ class ProductFilter(filters.FilterSet):
     gender = CharFilterInFilter(field_name='gender__slug', lookup_expr='in')
 
     name = filters.CharFilter(field_name='name', lookup_expr='icontains')
-    # name = CharFilterInFilter(field_name='name', lookup_expr='icontains')
 
     min_price = filters.NumberFilter(field_name="price", lookup_expr="gte")
     max_price = filters.NumberFilter(field_name="price", lookup_expr="lte")
