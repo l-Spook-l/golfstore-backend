@@ -44,6 +44,8 @@ class User(auth_models.AbstractUser):
     last_name = models.CharField(verbose_name="Last name", max_length=255)
     email = models.EmailField(verbose_name="Email", max_length=255, unique=True)
     password = models.CharField(max_length=255)
+    phone_number = models.IntegerField(null=True, blank=True, unique=True)
+    card_number = models.IntegerField(null=True, blank=True)
     username = None
 
     objects = UserManager()
