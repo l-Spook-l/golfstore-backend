@@ -40,12 +40,13 @@ class UserManager(auth_models.BaseUserManager):
 
 
 class User(auth_models.AbstractUser):
+    """Моя модель для пользователя"""
     first_name = models.CharField(verbose_name="First name", max_length=255)
     last_name = models.CharField(verbose_name="Last name", max_length=255)
     email = models.EmailField(verbose_name="Email", max_length=255, unique=True)
     password = models.CharField(max_length=255)
-    phone_number = models.IntegerField(null=True, blank=True, unique=True)
-    card_number = models.IntegerField(null=True, blank=True)
+    phone_number = models.BigIntegerField(null=True, blank=True, unique=True)
+    card_number = models.BigIntegerField(null=True, blank=True)
     username = None
 
     objects = UserManager()
@@ -121,6 +122,7 @@ class CategoryProduct(models.Model):
 
 
 class ProductPhotos(models.Model):
+    """Фото продукта"""
     image = models.ImageField(upload_to='photos/product')
 
     def __str__(self):
@@ -144,6 +146,7 @@ class Gender(models.Model):
 
 
 class Product(models.Model):
+    """Модель продукта"""
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     price = models.IntegerField()
@@ -182,6 +185,7 @@ class Product(models.Model):
 
 
 class InfoProduct(models.Model):
+    """Хар-ки продукта"""
     title = models.CharField(max_length=255)
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='options')
     description = models.CharField(max_length=255)
@@ -191,20 +195,24 @@ class InfoProduct(models.Model):
 
 
 class Basket(models.Model):
+    """Связка, пользователь - корзина"""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
 class BasketProduct(models.Model):
+    """Корзина"""
     basket = models.ForeignKey(Basket, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
 
 
 class WishList(models.Model):
+    """Связка, пользоатель - список желаний"""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
 class WishListProduct(models.Model):
+    """Список желаний"""
     wishlist = models.ForeignKey(WishList, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -214,7 +222,7 @@ class WishListProduct(models.Model):
 
 
 class Review(models.Model):
-    """Модель отзывов для продукта"""
+    """Отзывы для продукта"""
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт', related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     comment = models.TextField(max_length=5000)

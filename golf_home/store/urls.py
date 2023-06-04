@@ -27,15 +27,15 @@ urlpatterns = format_suffix_patterns([
     path('review/', ReviewViewSet.as_view({'post': 'create'})),
     path('review/<int:pk>/', ReviewViewSet.as_view({'patch': 'partial_update', 'delete': 'destroy'})),
 
-    path('info-product/',
-         InfoProductViewSet.as_view({'post': 'create', 'put': 'update', 'delete': 'destroy'})),
+    path('info-product/', InfoProductViewSet.as_view({'post': 'create', 'put': 'update', 'delete': 'destroy'})),
 
     path('basket/', BasketViewSet.as_view({'post': 'create'})),
     path('basket/<int:user>/', BasketViewSet.as_view({'get': 'retrieve'})),
 
     path('basket-product/', AddProductToBasketViewSet.as_view({'post': 'create'})),
     path('basket-product/<int:basket_id>/', BasketProductViewSet.as_view({'get': 'list', 'put': 'update'})),
-    path('basket-product/<int:basket_id>/<int:product_id>', BasketProductViewSet.as_view({'get': 'retrieve' ,'patch': 'partial_update', 'delete': 'destroy'})),
+    path('basket-product/<int:basket_id>/<int:product_id>',
+         BasketProductViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'delete': 'destroy'})),
 
     path('wishlist/', WishListViewSet.as_view({'post': 'create'})),
     path('wishlist/<int:user>/', WishListViewSet.as_view({'get': 'retrieve'})),

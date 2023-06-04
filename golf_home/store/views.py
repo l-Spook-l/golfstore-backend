@@ -11,9 +11,6 @@ from .serializer import StoreSerializer, BrandWithTypeAndCategorySerializer, Typ
     BasketSerializer, ReviewSerializer, ProductPhotosSerializer, BasketProductSerializer, GenderSerializer, \
     WishListSerializer, WishListProductSerializer, CategoryWithTypeAndBrandSerializer, ProductListByBasketSerializer, \
     ProductListByWishListSerializer, UserSerializer
-
-
-# from django.contrib.auth.models import User
 from .models import User
 
 

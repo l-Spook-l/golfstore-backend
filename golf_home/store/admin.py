@@ -28,10 +28,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class CategoryProductAdmin(admin.ModelAdmin):
-    # список полей которые мы хотим видеть в админ-панеле
-    # list_display = ('id', 'name', 'time_create', 'photo', 'is_published')
     list_display = ('id', 'name', 'slug')
-    # клик по этим поляем позволяет перейти на нужную статью
     list_display_links = ('id', 'name')
     # делаем поле редактируемым
     # list_editable = ('is_published',)
@@ -39,17 +36,13 @@ class CategoryProductAdmin(admin.ModelAdmin):
     # list_filter = ('is_published', 'time_create')
     # по каким полям делать поиск
     search_fields = ('name',)
-    # автозаполнение слага на основе имени
     prepopulated_fields = {'slug': ('name',)}
     # Если поле manyTOmany
     filter_horizontal = ('type', 'brand')
 
 
 class TypeProductAdmin(admin.ModelAdmin):
-    # список полей которые мы хотим видеть в админ-панеле
-    # list_display = ('id', 'name', 'time_create', 'photo', 'is_published')
     list_display = ('id', 'name', 'slug')
-    # клик по этим поляем позволяет перейти на нужную статью
     list_display_links = ('id', 'name')
     # делаем поле редактируемым
     # list_editable = ('is_published',)
@@ -57,13 +50,10 @@ class TypeProductAdmin(admin.ModelAdmin):
     # list_filter = ('is_published', 'time_create')
     # по каким полям делать поиск
     search_fields = ('name',)
-    # автозаполнение слага на основе имени
     prepopulated_fields = {'slug': ('name',)}
 
 
 class BrandProductAdmin(admin.ModelAdmin):
-    # список полей которые мы хотим видеть в админ-панеле
-    # list_display = ('id', 'name', 'time_create', 'photo', 'is_published')
     list_display = ('id', 'name', 'slug', 'photo')
     # клик по этим поляем позволяет перейти на нужную статью
     list_display_links = ('id', 'name')
@@ -73,7 +63,6 @@ class BrandProductAdmin(admin.ModelAdmin):
     # list_filter = ('is_published', 'time_create')
     # по каким полям делать поиск
     search_fields = ('name',)
-    # автозаполнение слага на основе имени
     prepopulated_fields = {'slug': ('name',)}
     # Если поле manyTOmany
     filter_horizontal = ('type', 'categories')
