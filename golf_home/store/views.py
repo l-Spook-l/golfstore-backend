@@ -1,17 +1,15 @@
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions
-from rest_framework.exceptions import ValidationError, PermissionDenied
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from .filters import ProductFilter, CategoryFilter, BrandFilter
 from .models import Product, TypeProduct, BrandProduct, InfoProduct, Basket, BasketProduct, WishList, WishListProduct, \
-    Gender, Review, ProductPhotos, CategoryProduct
+    Gender, Review, ProductPhotos, CategoryProduct, User
 from .serializer import StoreSerializer, BrandWithTypeAndCategorySerializer, TypeSerializer, InfoProductSerializer, \
     BasketSerializer, ReviewSerializer, ProductPhotosSerializer, BasketProductSerializer, GenderSerializer, \
     WishListSerializer, WishListProductSerializer, CategoryWithTypeAndBrandSerializer, ProductListByBasketSerializer, \
     ProductListByWishListSerializer, UserSerializer
-from .models import User
 
 
 class ProductAPILIstPagination(PageNumberPagination):
@@ -28,15 +26,6 @@ class StoreViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     pagination_class = ProductAPILIstPagination  # Пагинация
     lookup_field = 'slug'
-
-    # Параметры доступа
-    # def get_permissions(self):
-    #     if self.action == 'list' or self.action == 'retrieve':
-    #         # if self.action == 'list':
-    #         permission_classes = [permissions.AllowAny]
-    #     else:
-    #         permission_classes = [permissions.IsAdminUser]
-    #     return [permission() for permission in permission_classes]
 
 
 class ProductPhotosViewSet(viewsets.ModelViewSet):
@@ -158,6 +147,16 @@ class WishListProductViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
+
+    # Параметры доступа
+    # def get_permissions(self):
+    #     if self.action == 'list' or self.action == 'retrieve':
+    #         # if self.action == 'list':
+    #         permission_classes = [permissions.AllowAny]
+    #     else:
+    #         permission_classes = [permissions.IsAdminUser]
+    #     return [permission() for permission in permission_classes]
 
 
 class UserInfoViewSet(viewsets.ModelViewSet):
