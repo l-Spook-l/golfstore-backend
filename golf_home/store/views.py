@@ -162,6 +162,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 class UserInfoViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
+    lookup_field = 'id'
 
     def get_queryset(self):
         return User.objects.filter(id=self.request.user.id)

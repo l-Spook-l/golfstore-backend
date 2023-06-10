@@ -44,7 +44,7 @@ urlpatterns = format_suffix_patterns([
     path('wishlist-product/<int:wishlist_id>/', WishListProductViewSet.as_view({'get': 'list'})),
     path('wishlist-product/<int:wishlist_id>/<int:product_id>', WishListProductViewSet.as_view({'delete': 'destroy'})),
 
-    path('user-info/', UserInfoViewSet.as_view({'get': 'list', 'put': 'update'})),
+    path('user-info/<int:id>/', UserInfoViewSet.as_view({'get': 'list', 'patch': 'partial_update'})),
 
     path('photo-product/', ProductPhotosViewSet.as_view({'post': 'create', 'put': 'update', 'delete': 'destroy'})),
 ])
