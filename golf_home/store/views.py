@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from .filters import ProductFilter, CategoryFilter, BrandFilter
@@ -14,7 +14,6 @@ from .serializer import StoreSerializer, BrandWithTypeAndCategorySerializer, Typ
 
 class ProductAPILIstPagination(PageNumberPagination):
     page_size = 24  # кол-во записей на 1й стр
-    # 'page_size' - доп. пар-р в get запросе (нарп. можно получать больше или меньше записей page_size=20)
     page_query_param = 'page'
     max_page_size = 1000  # Ограничение записей на 1й стр для - page_query_param = 'page_size'
 
@@ -148,15 +147,6 @@ class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     permission_classes = [IsAuthenticated]
-
-    # Параметры доступа
-    # def get_permissions(self):
-    #     if self.action == 'list' or self.action == 'retrieve':
-    #         # if self.action == 'list':
-    #         permission_classes = [permissions.AllowAny]
-    #     else:
-    #         permission_classes = [permissions.IsAdminUser]
-    #     return [permission() for permission in permission_classes]
 
 
 class UserInfoViewSet(viewsets.ModelViewSet):

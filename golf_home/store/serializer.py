@@ -12,9 +12,6 @@ class ProductPhotosSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    # Если надо чтобы присоздании чего либой в модель записывался текущий пользователь
-    # user = user в модели если есть (урок 10)
-    # user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     first_name = serializers.StringRelatedField(source='user.first_name')
 
     class Meta:

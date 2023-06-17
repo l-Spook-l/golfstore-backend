@@ -70,10 +70,9 @@ class TypeProduct(models.Model):
     class Meta:
         verbose_name = 'Тип продукта'
         verbose_name_plural = 'Типы продуктов'
-        ordering = ['name']  # сортировка везде
+        ordering = ['name']
 
     def get_absolute_url(self):
-        # type -  название в URL (name='type')
         return reverse('type', kwargs={'type_slug': self.slug})
 
 
@@ -160,8 +159,6 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-    # метод для получения нужного - url, так же при использовании классов, помогает перенаправить на нужную стр.
-    # помогает в админ-панели сгенерировать кнопку (смотреть на сайте)
     def get_absolute_url(self):
         return reverse('product', kwargs={'product_slug': self.slug})
 
