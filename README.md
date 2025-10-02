@@ -1,4 +1,4 @@
-# Golf Store Website
+# golfstore-backend
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
 ![Django](https://img.shields.io/badge/Django-Backend_Framework-092E20?logo=django)
